@@ -23,14 +23,16 @@ function draw() {
         dy = -dy;
         fillColor = "#"+((1<<24)*Math.random()|0).toString(16);
      } 
-     else if (y + dy > canvas.height-ballRadius-paddleHeight) {
+     else if (y + dy > canvas.height-ballRadius) {
 
         if (x >= paddleX && x <= paddleX+paddleWidth) {
             dy = -dy
             points++;
         } 
         else {
-            if(!alert('game over!\n points: '+points)){window.location.reload();}
+            alert('game over!\n points: '+points);
+            window.location.reload();
+            clearInterval(interval);
         }
     }
 
@@ -89,4 +91,4 @@ function keyUpHandler(e) {
     }
 }
 
-setInterval(draw, 10);
+var interval = setInterval(draw, 10);
