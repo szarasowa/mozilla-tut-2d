@@ -18,7 +18,8 @@ var paddleX = (canvas.width-paddleWidth) /2;
 var rightPressed = false;
 var leftPressed = false;
 
-var bouncing = 0;
+// var bouncing = 0;
+var score = 0;
 
 var brickRowCount = 3;
 var brickColumnCount = 5;
@@ -41,7 +42,7 @@ function draw() {
             // h1.innerHTML = bouncing;
         } 
         else {
-            alert('game over!\n points: '+bouncing);
+            alert('game over!\n points: ' + score);
             window.location.reload();
             clearInterval(interval);
         }
@@ -64,6 +65,7 @@ function draw() {
     drawBall();
     drawPaddle();
     collisionDetection();
+    drawScore();
     x += dx;
     y += dy;
 }
@@ -118,12 +120,22 @@ function collisionDetection() {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
                     b.status = 0;
-                    bouncing++;
-                    h1.innerHTML = bouncing;
+                    score++;
+                    if (score == (brickColumnCount*brickRowCount)) {
+                        alert("You win! Points: " + score);
+                        window.location.reload();
+                        clearInterval(interval);
+                    }
                 }
             }
         }
     }
+}
+
+function drawScore() {
+    ctx.font = '16px Arial';
+    ctx.fillStyle = fillColor;
+    ctx.fillText("Score: " + score, 8, 20);
 }
 
 document.addEventListener('keydown', keyDownHandler, false);
