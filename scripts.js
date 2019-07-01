@@ -140,6 +140,14 @@ function drawScore() {
 
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
+document.addEventListener('mousemove', mouseMoveHandler, false);
+
+function mouseMoveHandler(e) {
+    var realativeX = e.clientX - canvas.offsetLeft;
+    if (realativeX > 0 && realativeX < canvas.width) {
+        paddleX = realativeX - paddleWidth/2;
+    }
+}
 
 function keyDownHandler(e) {
     console.log("pressed key: " + e.key);
