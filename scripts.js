@@ -1,6 +1,8 @@
 
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
+var htmlBody = document.getElementsByTagName('body');
+var h1 = document.getElementById('points');
 
 var ballRadius = 10;
 var x = canvas.width/2;
@@ -16,7 +18,39 @@ var paddleX = (canvas.width-paddleWidth) /2;
 var rightPressed = false;
 var leftPressed = false;
 
-var points = 0;
+var bouncing = 0;
+
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = 75;
+var brickHeight = 10;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+
+var bricks = [];
+for (var c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for(var r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = {x: 0, y: 0};
+    }
+}
+
+function drawBrick() {
+    for(var c = 0; c<brickColumnCount; c++) {
+        for(var r = 0; r<brickRowCount; r++) {
+            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
 
 function draw() {
     if (y + dy < ballRadius) {
@@ -27,10 +61,11 @@ function draw() {
 
         if (x >= paddleX && x <= paddleX+paddleWidth) {
             dy = -dy
-            points++;
+            bouncing++;
+            h1.innerHTML = bouncing;
         } 
         else {
-            alert('game over!\n points: '+points);
+            alert('game over!\n points: '+bouncing);
             window.location.reload();
             clearInterval(interval);
         }
@@ -49,6 +84,7 @@ function draw() {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBrick();
     drawBall();
     drawPaddle();
     x += dx;
